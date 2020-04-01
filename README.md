@@ -1,1 +1,40 @@
 # code-lines-counter-gradle-plugin
+
+Gradle plugin that counts lines of code
+
+## Installation
+1. Clone the repository
+```
+git clone https://github.com/SurpSG/code-lines-counter-gradle-plugin.git
+```
+2. Install the plugin to your maven local
+```
+gradlew install
+``` 
+3. Apply the plugin
+```
+buildscript {
+    repositories {
+        mavenLocal()
+    }
+    dependencies {
+        classpath 'com.github:code-lines-counter:0.0.1' // plugin’s artifact
+    }
+}
+
+apply plugin: 'com.github.code-lines'
+
+codeLinesStat {
+    skipBlankLines = true // optional, `false` by default
+    fileExtensions = ['java', 'kt', ... ,'groovy'] // optional, empty by default 
+}
+```
+## Run
+```
+gradlew codeLines
+```
+Output:
+```
+> Task :codeLines
+Total lines: 44
+```
