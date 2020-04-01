@@ -2,28 +2,48 @@ package com.github
 
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.plugins.JavaPlugin
 import org.gradle.api.plugins.JavaPluginConvention
+import java.io.File
 
 class CodeLinesCounterPlugin : Plugin<Project> {
 
     override fun apply(project: Project) {
         project.tasks.create("codeLines") { task ->
+            val codeLinesExtension = project.extensions.create("codeLinesStat", CodeLinesExtension::class.java)
             task.doLast {
-                printCodeLinesCount(project)
+                printCodeLinesCount(project, codeLinesExtension)
             }
         }.apply {
             group = "stat"
         }
     }
 
-    private fun printCodeLinesCount(project: Project) {
+    private fun printCodeLinesCount(project: Project, codeLinesExtension: CodeLinesExtension) {
+        val fileFilter = codeLinesExtension.buildFileFilter()
         var totalCount = 0
         project.convention.getPlugin(JavaPluginConvention::class.java).sourceSets.forEach { sourceSet ->
-            sourceSet.allSource.forEach { file ->
-                totalCount += file.readLines().count { it.isNotBlank() }
-            }
+            sourceSet.allSource
+                .filter(fileFilter)
+                .forEach { file ->
+                    val lines = file.readLines()
+                    totalCount += if (codeLinesExtension.skipBlankLines) {
+                        lines.count(CharSequence::isNotBlank)
+                    } else {
+                        lines.count()
+                    }
+                }
         }
         println("Total lines: $totalCount")
     }
+
+    private fun CodeLinesExtension.buildFileFilter(): (File) -> Boolean = if (fileExtensions.isEmpty()) {
+        { true }
+    } else {
+        { fileExtensions.contains(it.extension) }
+    }
+
+    open class CodeLinesExtension(
+        var skipBlankLines: Boolean = false,
+        var fileExtensions: MutableList<String> = mutableListOf()
+    )
 }
