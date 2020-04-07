@@ -41,7 +41,7 @@ class CodeLinesPluginTest {
     }
 
     @Test
-    fun `diff-coverage should create diffCoverage dir and full coverage with html report`() {
+    fun `codeLines task should print '0' when there is no source code`() {
         val result = gradleRunner
             .withArguments("codeLines")
             .build()
