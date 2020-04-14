@@ -13,12 +13,6 @@ gradlePlugin {
     }
 }
 
-task showClasspath {
-    doLast {
-        buildscript.configurations.classpath.each { println it.name }
-    }
-}
-
 group 'com.github'
 version '0.0.1'
 

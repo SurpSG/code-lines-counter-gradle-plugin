@@ -1,5 +1,6 @@
 package com.github
 
+import org.gradle.api.Action
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.plugins.JavaPluginConvention
@@ -26,7 +27,7 @@ class CodeLinesCounterPlugin : Plugin<Project> {
                 .filter(fileFilter)
                 .forEach { file ->
                     val lines = file.readLines()
-                    totalCount += if (codeLinesExtension.skipBlankLines) {
+                    totalCount += if (codeLinesExtension.sourceFilters.skipBlankLines) {
                         lines.count(CharSequence::isNotBlank)
                     } else {
                         lines.count()
@@ -43,7 +44,15 @@ class CodeLinesCounterPlugin : Plugin<Project> {
     }
 
     open class CodeLinesExtension(
-        var skipBlankLines: Boolean = false,
+        var sourceFilters: SourceFiltersExtension = SourceFiltersExtension(),
         var fileExtensions: MutableList<String> = mutableListOf()
+    ) {
+        fun sourceFilters(action: Action<in SourceFiltersExtension>) {
+            action.execute(sourceFilters)
+        }
+    }
+
+    open class SourceFiltersExtension(
+        var skipBlankLines: Boolean = false
     )
 }
