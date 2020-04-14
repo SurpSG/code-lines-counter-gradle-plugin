@@ -10,7 +10,6 @@ import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import java.io.File
 
-
 class CodeLinesPluginTest {
 
     @get:Rule
@@ -35,9 +34,6 @@ class CodeLinesPluginTest {
             .withPluginClasspath()
             .withProjectDir(testProjectDir.root)
             .withTestKitDir(testProjectDir.newFolder())
-            .apply {
-                withArguments("test").build()
-            }
     }
 
     @Test
