@@ -25,7 +25,7 @@ buildscript {
 apply plugin: 'com.github.code-lines'
 
 codeLinesStat {
-    skipBlankLines = true // optional, `false` by default
+    sourceFilters.skipBlankLines = true // optional, `false` by default
     fileExtensions = ['java', 'kt', ... ,'groovy'] // optional, empty by default 
 }
 ```
