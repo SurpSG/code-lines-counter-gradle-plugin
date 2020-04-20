@@ -44,4 +44,20 @@ class CodeLinesPluginTest {
         assertEquals(SUCCESS, result.task(":codeLines")!!.outcome)
         assertTrue(result.output.contains("Total lines: 0"))
     }
+
+    @Test
+    fun `codeLines task should print 'Total lines 8'`() {
+        val testClassLocation: File = testProjectDir.newFolder("src", "main", "java", "com", "github")
+            .resolve("TestClass.java")
+        CodeLinesPluginTest::class.java.classLoader
+            .getResource("TestClass.java")!!.file.let(::File)
+            .copyTo(testClassLocation)
+
+        val result = gradleRunner
+            .withArguments("codeLines")
+            .build()
+
+        assertEquals(SUCCESS, result.task(":codeLines")!!.outcome)
+        assertTrue(result.output.contains("Total lines: 8"))
+    }
 }
