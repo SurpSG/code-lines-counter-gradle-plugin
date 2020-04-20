@@ -46,9 +46,8 @@ class CodeLinesPluginTest {
     }
 
     @Test
-    fun `codeLines task should print 'Total lines 8'`() {
-        val testClassLocation: File = testProjectDir.newFolder("src", "main", "java", "com", "github")
-            .resolve("TestClass.java")
+    fun `codeLines task should print 'Total lines 6'`() {
+        val testClassLocation: File = testProjectDir.newFolder("src", "main", "java").resolve("TestClass.java")
         CodeLinesPluginTest::class.java.classLoader
             .getResource("TestClass.java")!!.file.let(::File)
             .copyTo(testClassLocation)
@@ -58,6 +57,27 @@ class CodeLinesPluginTest {
             .build()
 
         assertEquals(SUCCESS, result.task(":codeLines")!!.outcome)
-        assertTrue(result.output.contains("Total lines: 8"))
+        assertTrue(result.output.contains("Total lines: 6"))
+    }
+
+    @Test
+    fun `codeLines should skip blank lines`() {
+        val testClassLocation: File = testProjectDir.newFolder("src", "main", "java").resolve("TestClass.java")
+        CodeLinesPluginTest::class.java.classLoader
+            .getResource("TestClass.java")!!.file.let(::File)
+            .copyTo(testClassLocation)
+
+        buildFile.appendText("""
+            codeLinesStat {
+                sourceFilters.skipBlankLines = true 
+            }
+        """.trimIndent())
+
+        val result = gradleRunner
+            .withArguments("codeLines")
+            .build()
+
+        assertEquals(SUCCESS, result.task(":codeLines")!!.outcome)
+        assertTrue(result.output.contains("Total lines: 5"))
     }
 }
