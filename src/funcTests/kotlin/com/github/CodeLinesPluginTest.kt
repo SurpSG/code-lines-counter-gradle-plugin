@@ -21,7 +21,6 @@ class CodeLinesPluginTest {
     @Before
     fun setup() {
         buildFile = testProjectDir.newFile("build.gradle")
-
         buildFile.appendText("""
             plugins {
                 id 'java'
@@ -41,8 +40,6 @@ class CodeLinesPluginTest {
         val result = gradleRunner
             .withArguments("codeLines")
             .build()
-
-        println(result.output)
 
         assertEquals(SUCCESS, result.task(":codeLines")!!.outcome)
         assertTrue(result.output.contains("Total lines: 0"))
