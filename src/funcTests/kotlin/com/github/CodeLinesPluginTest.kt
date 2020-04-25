@@ -33,6 +33,11 @@ class CodeLinesPluginTest {
             .withPluginClasspath()
             .withProjectDir(testProjectDir.root)
             .withTestKitDir(testProjectDir.newFolder())
+            .apply {
+                // gradle testkit jacoco support
+                File("./build/testkit/testkit-gradle.properties")
+                    .copyTo(File(projectDir, "gradle.properties"))
+            }
     }
 
     @Test
