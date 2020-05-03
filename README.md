@@ -1,6 +1,9 @@
 # code-lines-counter-gradle-plugin
 
-Gradle plugin that counts lines of code
+Gradle plugin that counts lines of code. 
+
+The Complete Gradle Plugin Tutorial
+https://dzone.com/articles/the-complete-custom-gradle-plugin-building-tutoria
 
 ## Installation
 1. Clone the repository
