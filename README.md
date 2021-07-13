@@ -9,7 +9,7 @@ git clone https://github.com/SurpSG/code-lines-counter-gradle-plugin.git
 ```
 2. Install the plugin to your maven local
 ```
-gradlew install
+gradlew publishToMavenLocal
 ``` 
 3. Apply the plugin
 ```
